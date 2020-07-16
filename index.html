@@ -5,181 +5,13 @@
 	<meta charset="utf-8">
 	<title>添加老师</title>
 	<meta id="viewport" name="viewport" content="width=720, initial-scale=0.5, maximum-scale=0.5, user-scalable=0">
-	<script src="vue.min.js" type="text/javascript" charset="utf-8"></script>
-	<script src="axios.min.js" type="text/javascript" charset="utf-8"></script>
 	<!-- <script src="https://res.wx.qq.com/open/js/jweixin-1.4.0.js" type="text/javascript" charset="utf-8"></script> -->
 </head>
 
 <body>
 	<div class="content" id="app">
-		<div class="qr-box" v-show="isWx">
-			<img class="img-b" src="images/msxq_tjxs_01.png" alt="" v-show="isWx">
-			<img class="qr-img" :src="imgQRCode">
-		</div>
-		<img class="img-b" src="images/msxq_tjxs_02.png" alt="" v-show="isWx">
-		<img class="img-b" src="images/msxq_tjxs_03.png" alt="" v-show="isWx">
-		<img class="img-b" src="images/msxq_tjxs_04.png" alt="" v-show="isWx">
-		<img class="img-b" src="images/msxq_tjxs_05.png" alt="" v-show="isWx">
-		<div class="get-btn" @click="clickGetLesson" v-show="isShowGetBtn" v-show="isWx">
-			<p class="get-btn-txt">免费领课</p>
-		</div>
-		<!-- <p class="num-tips">{{gainLessonNum}}人已领课</p> -->
-		<!-- todo 老曾答应音频播放功能用不着（女老师的图，男老师的音频！！）  -->
-		<!-- <div class="audio-box audio-1" @click="playAudio1">
-			<audio id="audio-1" src="audio/audio_1.mp3">
-				Your browser does not support the audio element.
-			</audio>
-		</div>
-		<div class="audio-box audio-2" @click="playAudio2">
-			<audio id="audio-2" src="audio/audio_2.mp3">
-				Your browser does not support the audio element.
-			</audio>
-		</div> -->
-		<!-- test -->
-		<!-- <p class="test-tips-1">{{offTop}}</p> -->
-		<!-- <p class="test-tips-2">{{uuid}}</p> -->
-
-		<p class="txt-tips1" v-show="!isWx">如需浏览，请长按网址复制后在微信浏览器访问</p>
-		<p class="txt-tips2" v-show="!isWx">{{locationHref}}</p>
+		
 	</div>
-	<script type="text/javascript">
-		var vm = new Vue({
-			el: "#app",
-			data: {
-				imgQRCode: "",
-				offTop: 0,
-				isShowGetBtn: false,
-				gainLessonNum: 0,
-				uuid: "test",
-				isWx: true,
-				locationHref: ""
-			},
-			mounted: function () {
-				this.addListeners();
-				this.addMeta();
-				this.isWx = this.isWxBrowser();
-				if (this.isWx) {
-					this.initData();
-				}
-				this.locationHref = window.location.href;
-			},
-			destroyed() {
-				this.removeListeners;
-			},
-			methods: {
-				initData: function () {					
-					this.uuid = localStorage.getItem("UUID") || this.getUID();
-					console.log("this.uuid:" + this.uuid);
-					localStorage.setItem("UUID", this.uuid);
-					this.getPageInfo();
-				},
-				addMeta: function () {
-					let w = window.innerWidth;
-					// alert(w);
-					// 修正
-					if (w != 750) {
-						let s = 0.5 * w / 750;
-						console.log(s);
-						let content = "width=750, initial-scale=" + s + ", maximum-scale=" + s + ", user-scalable=0";
-						let vp = document.getElementById("viewport");
-						vp.setAttribute("content", content);
-					}
-				},
-				onscroll: function (event) {
-					this.offTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop;
-					if (this.offTop >= 1500) {
-						this.isShowGetBtn = true;
-					} else {
-						this.isShowGetBtn = false;
-					}
-				},
-				addListeners: function () {
-					window.addEventListener('scroll', this.onscroll);
-				},
-				addAudioListener: function () {
-					// 暂时不用
-					let audio1 = document.getElementById("audio-1");
-					if (audio1) {
-						audio1.onended = () => {
-							console.log("audio-1 ended");
-						}
-						audio1.onpause = () => {
-							console.log("audio-1 paused");
-						}
-						audio1.onstart = () => {
-							console.log("audio-1 onstart");
-						}
-					}
-					let audio2 = document.getElementById("audio-2");
-					if (audio2) {
-						audio2.onended = () => {
-							console.log("audio-2 ended");
-						}
-						audio2.onpause = () => {
-							console.log("audio-2 paused");
-						}
-						audio2.onstart = () => {
-							console.log("audio-2 onstart");
-						}
-					}
-				},
-				removeListeners: function () {
-					window.removeEventListener('scroll', this.onscroll);
-				},
-				getUID: function () {
-					return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
-						var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
-						return v.toString(16);
-					})
-				},
-				getPageInfo: function () {
-					axios({
-						method: "GET",
-						url: "https://gateway.cheesestar.com/v1/wechat/gongzhong/getTempAssistant?id=" + this.uuid + "&source=mice",
-						data: {}
-					}).then(res => {
-						if (res.data.code === 200) {
-							this.gainLessonNum = res.data.data.num;
-							this.imgQRCode = res.data.data.picUrl;
-						} else {
-							alert(res.data.msg || "请刷新再试");
-						}
-					}).catch(error => {
-						alert("网络错误");
-					});
-				},
-				clickGetLesson: function () {
-					window.scroll(0, 0);
-				},
-				playAudio1: function () {
-					this.playAudioById("audio-1", true);
-					this.playAudioById("audio-2", false);
-				},
-				playAudio2: function () {
-					this.playAudioById("audio-1", false);
-					this.playAudioById("audio-2", true);
-				},
-				playAudioById: function (audioId, isPlay) {
-					let audio = document.getElementById(audioId);
-					if (audio) {
-						if (isPlay) {
-							audio.currentTime = 0;
-							audio.play();
-						} else {
-							audio.pause();
-						}
-					}
-				},
-				isWxBrowser: function () {
-					let isWx = window.navigator.userAgent.toLowerCase().indexOf('micromessenger') !== -1;
-					return isWx;
-				},
-				wxAuth: function () {
-					window.location.href = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx919b1cb5fee5c261&redirect_uri=https%3a%2f%2fmh5.cheesestar.com%2fexchange%2findex.html&response_type=code&scope=snsapi_base#wechat_redirect";
-				}
-			}
-		});
-	</script>
 	<style type="text/css">
 		body {
 			margin: 0;
@@ -193,10 +25,12 @@
 		.content {
 			min-width: 750px;
 			max-width: 750px;
+			height: 750px;
 			display: flex;
 			flex-direction: column;
 			align-items: center;
 			margin: auto;
+			background-color: #D3570C;
 		}
 
 		.get-btn {
