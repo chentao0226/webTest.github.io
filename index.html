@@ -14,7 +14,8 @@
 	<div class="content" id="app">
 		<div class="qr-box" v-show="isWx">
 			<img class="img-b" src="images/msxq_tjxs_01.png" alt="" v-show="isWx">
-			<img class="qr-img" :src="imgQRCode">
+			<!-- <img class="qr-img" :src="imgQRCode"> -->
+			<img class="qr-img" src="./images/1594197672600banbamciren.jpg">
 		</div>
 		<img class="img-b" src="images/msxq_tjxs_02.png" alt="" v-show="isWx">
 		<img class="img-b" src="images/msxq_tjxs_03.png" alt="" v-show="isWx">
@@ -152,11 +153,22 @@
 				}
 			}
 		});
-		
+
+		// 动态重置rem基准
+		// (function () {
+		// 	function change() {
+		// 		/* 这里的html字体大小利用了一个简单书序公式（十字相乘），当我们默认设置以屏幕32rem位基准此时的字体大小为1rem(750，1rem),那么浏览器窗口大小改变的时候新的html的fontSize（clientWidth  新的值）就是clientWidth*20/320 */
+		// 		document.documentElement.style.fontSize = document.documentElement.clientWidth * 10 / 750 + 'px';
+		// 		console.log("style.fontSize " + document.documentElement.style.fontSize + ", " + document.documentElement.clientWidth);
+		// 	}
+		// 	change();
+		// 	/* 监听窗口大小发生改变时 */
+		// 	window.addEventListener('resize', change, false);
+		// })();
 	</script>
 	<style type="text/css">
 		html {
-			font-size: 1.333333vw;
+			font-size: 1.35vw;
 			overflow-x: hidden;
 		}
 
@@ -186,10 +198,10 @@
 
 		.get-btn {
 			position: fixed;
-			right: 3rem;
-			bottom: 20rem;
-			width: 18rem;
-			height: 18rem;
+			right: 3vw;
+			bottom: 22vw;
+			width: 25vw;
+			height: 25vw;
 			display: flex;
 			align-items: center;
 			justify-content: center;
@@ -202,12 +214,12 @@
 		}
 
 		.get-btn-txt {
-			font-size: 3rem;
-			line-height: 18rem;
+			font-size: 4vw;
+			line-height: 4vw;
 			color: white;
 			font-weight: bold;
 			text-align: center;
-			text-shadow: 0 0 0.2em #D3570C, -0 -0 0.2em #D3570C;
+			text-shadow: 0 0 0.2rem #D3570C, 0 0 0.2rem #D3570C;
 		}
 
 		.qr-box {
@@ -216,6 +228,7 @@
 			align-items: center;
 			justify-content: center;
 			position: relative;
+			flex-direction: column;
 		}
 
 		.img-b {
@@ -225,10 +238,10 @@
 		}
 
 		.qr-img {
-			width: 57rem;
+			width: 74%;
 			position: absolute;
-			left: 9rem;
-			bottom: 19.3rem;
+			left: 13%;
+			bottom: 15%;
 			z-index: 1;
 		}
 
