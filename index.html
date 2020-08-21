@@ -27,6 +27,11 @@
 
 		<p class="txt-tips1" v-show="!isWx">如需浏览，请长按网址复制后在微信浏览器访问</p>
 		<p class="txt-tips2" v-show="!isWx">{{locationHref}}</p>
+
+		<!-- recordTest on realDevice -->
+		<!-- <form action="server.cgi" method="post" enctype="multipart/form-data" v-show="!isWx">
+			<input type="file" name="audio" accept="audio/*" capture>
+		</form> -->
 	</div>
 	<script type="text/javascript">
 		var vm = new Vue({
@@ -37,7 +42,7 @@
 				isShowGetBtn: false,
 				gainLessonNum: 0,
 				uuid: "test",
-				isWx: true,
+				isWx: false,
 				locationHref: ""
 			},
 			mounted: function () {
