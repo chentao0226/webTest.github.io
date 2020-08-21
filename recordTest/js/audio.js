@@ -139,6 +139,7 @@
         //回放
         this.play = function (audio) {
             audio.src = window.URL.createObjectURL(this.getBlob());
+            alert(audio.src)
         };
  
         //上传
