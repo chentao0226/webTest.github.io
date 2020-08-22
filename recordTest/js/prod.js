@@ -1,18 +1,18 @@
 
 //音乐详情渲染
-function timeauto(){
+function timeauto() {
 	var playerlist = $('.player');
-	playerlist.each((index,item)=>{
-		item.addEventListener("canplay", function(){
-			let duration=Math.ceil(item.duration);
+	playerlist.each((index, item) => {
+		item.addEventListener("canplay", function () {
+			let duration = Math.ceil(item.duration);
 			document.getElementsByClassName('duration')[index].innerText = formatTime(duration);
 		});
 	})
 };
 
 //声音操作
-function muice(el){
-	$(el).on("click",function(){
+function muice(el) {
+	$(el).on("click", function () {
 		//当下点击播放
 		questions_id = $(this).attr('index');
 		var player = $(this).find('.player')[0];//jquery对象转换成js对象
@@ -32,16 +32,16 @@ function muice(el){
 			};
 			//当下播放
 			player.play();
-			player.addEventListener("timeupdate", function(){
-				let durationCur=formatTime(parseInt(player.duration-player.currentTime));
-				let percent=Math.round(parseInt(player.currentTime) / parseInt(player.duration) * 100);					
+			player.addEventListener("timeupdate", function () {
+				let durationCur = formatTime(parseInt(player.duration - player.currentTime));
+				let percent = Math.round(parseInt(player.currentTime) / parseInt(player.duration) * 100);
 				$(this).parent().find('progress').val(percent);
 				player.nextElementSibling.innerText = durationCur;
-				
+
 				//播放完毕初始化
 				let duration = formatTime(parseInt(player.duration));
-				let currentTime = formatTime(parseInt(player.currentTime));					
-				if (duration==currentTime) {
+				let currentTime = formatTime(parseInt(player.currentTime));
+				if (duration == currentTime) {
 					player.pause();
 					$(el).removeClass("glyphicon-pause");
 					$(el).addClass("glyphicon-play");
@@ -49,9 +49,9 @@ function muice(el){
 					player.nextElementSibling.innerText = currentTime;
 				}
 			});
-			
-			
-		}else{
+
+
+		} else {
 			//console.log("播放")
 			player.pause();
 		};
@@ -64,23 +64,23 @@ function muice(el){
 //时间转换
 function formatTime(s) {
 	var t;
-	if(s > -1) {
+	if (s > -1) {
 		var hour = Math.floor(s / 3600);
 		var min = Math.floor(s / 60) % 60;
 		var sec = s % 60;
-		if(hour < 0 || hour == 0) {
+		if (hour < 0 || hour == 0) {
 			t = '';
-		} else if(0 < hour < 10) {
+		} else if (0 < hour < 10) {
 			t = '0' + hour + ":";
 		} else {
 			t = hour + ":";
-					}
- 
-					if(min < 10) {
-						t += "0";
+		}
+
+		if (min < 10) {
+			t += "0";
 		}
 		t += min + ":";
-		if(sec < 10) {
+		if (sec < 10) {
 			t += "0";
 		}
 		t += sec;
